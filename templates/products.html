@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Products - GlowCart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="sidebar">
+        <h2>GlowCart</h2>
+        <ul>
+            <li><a href="/customer_dashboard">Home</a></li>
+            <li><a href="/products">Products</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/orders">Orders</a></li>
+            <li><a href="/profile">Profile</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+    </div>
+
+    <div class="main">
+
+        <div class="topbar">
+            <h2>All Products</h2>
+        </div>
+
+        <div class="product-grid">
+
+            {% for product in products %}
+            <div class="card">
+
+                {% if product.image %}
+                    <img src="{{ url_for('static', filename='images/' + product.image) }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/300x200?text=Product">
+                {% endif %}
+
+                <h4>{{ product.name }}</h4>
+                <p>₹{{ product.price }}</p>
+
+                <form action="/add_to_cart/{{ product.id }}" method="POST">
+                    <button type="submit">Add to Cart</button>
+                </form>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+    
+</div>
+
+</body>
+</html>

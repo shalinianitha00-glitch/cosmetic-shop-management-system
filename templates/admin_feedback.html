@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Feedback</title>
+
+    <style>
+        body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+
+    background: 
+        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+       url('/static/images/feedback.jpg');
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+        /* 🔥 Header */
+    .header {
+    background: #e76f93; /* softer pink */
+    color: white;
+    padding: 18px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+        .subtext {
+            text-align: center;
+            color: #777;
+            margin: 15px 0 25px;
+            font-size: 14px;
+        }
+
+        /* 🔥 Layout */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            padding: 20px 40px;
+        }
+
+        /* 💎 Premium Card */
+        .card {
+            background: rgb(237, 231, 231);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        /* 👤 User */
+        .user {
+            font-weight: 600;
+            font-size: 16px;
+            color: #333;
+        }
+
+        /* 📦 Order */
+        .order {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        /* ⭐ Stars */
+        .stars {
+            color: #ffc107;
+            font-size: 18px;
+            margin: 6px 0;
+        }
+
+        /* 💬 Comment */
+        .comment {
+            font-size: 14px;
+            color: #444;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        /* ✨ Badge */
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff4d6d;
+            color: white;
+            font-size: 11px;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        /* ❌ Empty */
+        .empty {
+            text-align: center;
+            margin-top: 80px;
+            color: #777;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    💬 Customer Feedback
+</div>
+
+<p class="subtext">Real reviews from your customers ✨</p>
+
+<div class="container">
+
+{% for fb in feedbacks %}
+    <div class="card">
+
+        <div class="badge">
+            {{ fb.rating }} ⭐
+        </div>
+
+        <div class="user">
+            👤 {{ fb.user_name if fb.user_name else "Customer" }}
+        </div>
+
+        <div class="order">
+            📦 Order ID: {{ fb.order_id }}
+        </div>
+
+        <div class="stars">
+            {% for i in range(fb.rating|int) %}
+                ⭐
+            {% endfor %}
+        </div>
+
+        <div class="comment">
+            "{{ fb.comment }}"
+        </div>
+
+    </div>
+
+{% else %}
+    <p class="empty">No feedback yet 😔</p>
+{% endfor %}
+
+</div>
+
+</body>
+</html>

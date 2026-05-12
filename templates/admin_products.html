@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manage Products</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #f8cdda, #1d2b64);
+        }
+        .container {
+            width: 90%;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead {
+            background: #1d2b64;
+            color: white;
+        }
+        th, td {
+            padding: 15px;
+            text-align: center;
+        }
+        tbody tr {
+            border-bottom: 1px solid #ddd;
+            transition: 0.3s;
+        }
+        tbody tr:hover {
+            background-color: #f2f2f2;
+        }
+        .btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            color: white;
+            display: inline-block;
+            margin: 2px;
+        }
+        .edit { background: #28a745; }
+        .delete { background: #dc3545; }
+        .edit:hover { background: #218838; }
+        .delete:hover { background: #c82333; }
+
+        .top-actions {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .add-btn {
+            background: #007bff;
+            padding: 10px 18px;
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .add-btn:hover { background: #0056b3; }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+        .back-btn:hover { background: #5a6268; }
+
+        /* Stock buttons */
+        .stock-wrap{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:10px;
+        }
+        .stock-btn{
+            width:32px;
+            height:32px;
+            border-radius:8px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            text-decoration:none;
+            font-weight:bold;
+            color:white;
+            background:#6f42c1;
+        }
+        .stock-btn:hover{ opacity:0.9; transform:translateY(-1px); }
+        .stock-num{ font-weight:800; color:#111; min-width:20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>🛍 Manage Products</h2>
+
+    <div class="top-actions">
+        <a href="/add_product" class="add-btn">+ Add New Product</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Product Name</th>
+                <th>Price (₹)</th>
+                <th>Stock</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.id }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }}</td>
+
+                <td>
+                    <div class="stock-wrap">
+                        <a class="stock-btn" href="/admin_stock_decrease/{{ product.id }}">-</a>
+                        <span class="stock-num">{{ product.stock }}</span>
+                        <a class="stock-btn" href="/admin_stock_increase/{{ product.id }}">+</a>
+                    </div>
+                </td>
+
+                <td>
+                    <a href="/edit_product/{{ product.id }}" class="btn edit">Edit</a>
+
+                    <a href="/delete_product/{{ product.id }}"
+                       class="btn delete"
+                       onclick="return confirm('Are you sure you want to delete this product?');">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="/admin_dashboard" class="back-btn">← Back to Dashboard</a>
+</div>
+
+</body>
+</html>

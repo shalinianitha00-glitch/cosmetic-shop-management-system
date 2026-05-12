@@ -1,0 +1,215 @@
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f8c8dc, #c2185b);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 40px;
+    width: 350px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    color: white;
+    text-align: center;
+}
+
+.tabs button {
+    background: transparent;
+    border: none;
+    color: white;
+    font-weight: 500;
+    margin: 10px;
+    cursor: pointer;
+}
+
+form {
+    margin-top: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 8px;
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background: white;
+    color: #c2185b;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.card {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 25px;
+    border-radius: 15px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.card p {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+/* ================= ADMIN DASHBOARD ================= */
+
+.dashboard-body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #f8c8dc, #c2185b);
+    min-height: 100vh;
+    padding: 40px 0;
+}
+
+/* Remove center flex for dashboard */
+.dashboard-wrapper {
+    width: 85%;
+    margin: auto;
+}
+
+/* Header */
+.dashboard-header {
+    text-align: center;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 40px;
+}
+
+/* Action Buttons */
+.dashboard-actions {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.dashboard-actions a {
+    text-decoration: none;
+    padding: 18px 40px;
+    border-radius: 12px;
+    font-weight: 600;
+    background: white;
+    color: #c2185b;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    transition: 0.3s ease;
+}
+
+.dashboard-actions a:hover {
+    transform: translateY(-4px);
+}
+
+/* Stats Grid */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+    padding: 35px;
+    border-radius: 18px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    transition: 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: scale(1.05);
+}
+
+/* Different card colors */
+.dashboard-card:nth-child(1) {
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+}
+
+.dashboard-card:nth-child(2) {
+    background: linear-gradient(135deg, #a18cd1, #fbc2eb);
+}
+
+.dashboard-card:nth-child(3) {
+    background: linear-gradient(135deg, #f6d365, #fda085);
+}
+
+.dashboard-card:nth-child(4) {
+    background: linear-gradient(135deg, #84fab0, #8fd3f4);
+}
+
+.dashboard-card h3 {
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+
+.dashboard-card p {
+    font-size: 34px;
+    font-weight: bold;
+}
+
+/* Logout */
+.dashboard-logout {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.dashboard-logout a {
+    background: #ffffff;
+    color: #c2185b;
+    padding: 12px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.dashboard-logout a:hover {
+    background: #ffe4ec;
+}
+
+.admin-btn {
+    transition: 0.3s;
+}
+
+.admin-btn:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+

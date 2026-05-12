@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register - GlowCart</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *{ margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+
+        body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background: 
+        linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+        url('/static/images/bg.jpg');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+    .container{
+    width: 100%;
+    max-width: 360px;
+
+    padding: 18px 20px;   /* 🔥 reduced padding */
+
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(15px);
+
+    border-radius: 50px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+}
+
+        h2{
+            text-align:center;
+            margin-bottom: 20px;
+            color:#c2185b;
+        }
+
+        label{
+            font-weight:600;
+            margin-top:10px;
+            display:block;
+        }
+
+        input{
+            width:100%;
+            padding:10px;
+            margin-top:6px;
+            border-radius:10px;
+            border:1px solid #ddd;
+        }
+
+        input:focus{
+            border-color:#ff6b81;
+            outline:none;
+        }
+
+        .btn{
+            width:100%;
+            margin-top:20px;
+            padding:12px;
+            border:none;
+            border-radius:12px;
+            background: linear-gradient(45deg, #ff6b81, #ff4757);
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+        }
+
+        .btn:hover{
+            transform: translateY(-2px);
+        }
+
+        .helper{
+            font-size:12px;
+            margin-top:8px;
+            color:#777;
+        }
+
+        .link{
+            text-align:center;
+            margin-top:15px;
+        }
+
+        .link a{
+            color:#c2185b;
+            font-weight:600;
+            text-decoration:none;
+        }
+
+        .error{
+            color:red;
+            font-size:12px;
+            margin-top:6px;
+        }
+        .flash-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.flash {
+    padding: 14px 20px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    font-size: 14px;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    animation: slideIn 0.4s ease;
+}
+
+/* SUCCESS */
+.flash.success {
+    background: linear-gradient(45deg, #28a745, #20c997);
+}
+
+/* ERROR */
+.flash.error {
+    background: linear-gradient(45deg, #ff4d4d, #dc3545);
+}
+
+/* Animation */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(60px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+    </style>
+</head>
+
+<body>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-container">
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<div class="container">
+    <h2>Create Account 💗</h2>
+
+    <form method="POST" action="/register" onsubmit="return validateForm()">
+
+        <label>Name</label>
+        <input type="text" name="name" id="name" required>
+
+        <label>Email</label>
+        <input type="email" name="email" id="email" required>
+
+        <label>Phone</label>
+        <input type="text" name="phone" id="phone" maxlength="10" required>
+
+        <label>Password</label>
+        <input type="password" name="password" id="password" required>
+
+        <label>Confirm Password</label>
+        <input type="password" name="confirm_password" id="confirm" required>
+
+        <div class="helper">
+            Password must contain 8 characters, 1 uppercase, 1 number & 1 special character
+        </div>
+
+        <div id="error" class="error"></div>
+
+        <button class="btn">Register</button>
+    </form>
+
+    <div class="link">
+        <a href="/">← Back to Login</a>
+    </div>
+</div>
+
+<script>
+function validateForm(){
+    const phone = document.getElementById("phone").value;
+    const pass = document.getElementById("password").value;
+    const confirm = document.getElementById("confirm").value;
+    const error = document.getElementById("error");
+
+    error.innerHTML = "";
+
+    const phonePattern = /^[0-9]{10}$/;
+    const strongPass = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+
+    if(!phonePattern.test(phone)){
+        error.innerHTML = "Phone must be 10 digits";
+        return false;
+    }
+
+    if(!strongPass.test(pass)){
+        error.innerHTML = "Weak password";
+        return false;
+    }
+
+    if(pass !== confirm){
+        error.innerHTML = "Passwords do not match";
+        return false;
+    }
+
+    return true;
+}
+setTimeout(() => {
+    document.querySelectorAll('.flash').forEach(el => {
+        el.style.opacity = "0";
+        setTimeout(() => el.remove(), 500);
+    });
+}, 3000);
+</script>
+
+</body>
+</html>

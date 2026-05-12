@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Profile</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding: 30px;
+
+    background:
+        linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+        url('/static/images/petal-bg.jpg');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    font-family: 'Poppins', sans-serif;
+}
+
+        .profile-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            width: 350px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .profile-card h2 {
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .profile-card p {
+            font-size: 16px;
+            margin: 10px 0;
+            text-align: left;
+        }
+
+        .profile-card strong {
+            display: inline-block;
+            width: 120px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            background: white;
+            color: #d63384;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #ffe3ec;
+        }
+
+        .icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="profile-card">
+
+    <div class="icon">👤</div>
+    <h2>My Profile</h2>
+
+    <p><strong>Name:</strong> {{ user.name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Phone:</strong> {{ user.phone }}</p>
+    <p><strong>Customer ID:</strong> {{ user.id }}</p>
+
+    <!-- ✅ FIXED BUTTON -->
+    <a href="{{ url_for('customer_dashboard') }}" class="btn">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+
+</body>
+</html>

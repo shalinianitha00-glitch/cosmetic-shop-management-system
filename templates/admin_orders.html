@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - Orders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #f8c8dc, #e75480);
+        }
+
+        .container {
+            width: 95%;
+            margin: 30px auto;
+        }
+
+        h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+        }
+
+        .table-box {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: linear-gradient(135deg, #d81b60, #ad1457);
+            color: white;
+            padding: 14px;
+            font-size: 15px;
+        }
+
+        td {
+            padding: 14px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #fff0f5;
+        }
+
+        /* STATUS BADGES */
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .placed { background: #ff9800; }
+        .shipped { background: #03a9f4; }
+        .delivered { background: #4caf50; }
+        .cancelled { background: #f44336; }
+
+        /* SELECT */
+        select {
+            padding: 8px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+
+        /* BUTTON */
+        button {
+            padding: 8px 16px;
+            border: none;
+            background: linear-gradient(135deg, #d81b60, #ad1457);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+        }
+
+        /* BACK BUTTON */
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 15px;
+            text-decoration: none;
+            background: white;
+            color: #d81b60;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #ffe4ec;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>🧾 All Customer Orders</h2>
+
+    <a href="/admin_dashboard" class="back-btn">⬅ Back to Dashboard</a>
+
+    <div class="table-box">
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Payment</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Update</th>
+            </tr>
+
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.customer_name }}</td>
+                <td>{{ order.address }}</td>
+                <td>{{ order.payment_mode }}</td>
+                <td><b>₹{{ order.total_amount }}</b></td>
+                <td>{{ order.order_date }}</td>
+
+                <!-- STATUS BADGE -->
+                <td>
+                    <span class="status 
+                        {% if order.status == 'Placed' %}placed
+                        {% elif order.status == 'Shipped' %}shipped
+                        {% elif order.status == 'Delivered' %}delivered
+                        {% elif order.status == 'Cancelled' %}cancelled
+                        {% endif %}">
+                        {{ order.status }}
+                    </span>
+                </td>
+
+                <!-- UPDATE -->
+                <td>
+                    <form action="{{ url_for('update_order_status', order_id=order.id) }}" method="POST">
+                        <select name="status">
+                            <option value="Placed">Placed</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                        <br><br>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

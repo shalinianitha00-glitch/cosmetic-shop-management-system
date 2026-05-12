@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GlowCart Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>GlowCart</h2>
+        <ul>
+            <li><a href="{{ url_for('customer_dashboard') }}">Home</a></li>
+            <li><a href="{{ url_for('products') }}">Products</a></li>
+            <li><a href="{{ url_for('cart') }}">Cart</a></li>
+            <li><a href="{{ url_for('orders') }}">Orders</a></li>
+            <li><a href="{{ url_for('profile') }}">Profile</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+
+        <!-- Topbar -->
+        <div class="topbar">
+            <h2>Hello, {{ session.get('user_name') }} 💗</h2>
+            <div class="cart-section">
+                🛒 Cart ({{ session.get('cart', {})|length }})
+            </div>
+        </div>
+
+        <!-- Banner -->
+        <div class="banner">
+            <h1>Luxury Beauty Collection</h1>
+            <p>Glow like never before ✨</p>
+        </div>
+
+        <!-- Products -->
+        <h3>Featured Products</h3>
+
+        <div class="product-grid">
+
+            {% for product in products %}
+            <div class="card">
+
+                {% if product.image %}
+                    <img src="{{ url_for('static', filename='images/' + product.image) }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/300x200?text=Product">
+                {% endif %}
+
+                <h4>{{ product.name }}</h4>
+                <p>₹{{ product.price }}</p>
+
+                {% if product.stock > 0 %}
+                    <p style="font-weight:600; color:#2e7d32;">
+                        ✅ Stock Available: {{ product.stock }}
+                    </p>
+                {% else %}
+                    <p style="font-weight:700; color:#d32f2f;">
+                        ❌ Out of Stock
+                    </p>
+                {% endif %}
+
+                <form action="/add_to_cart/{{ product.id }}" method="POST">
+
+                    <button type="button" onclick="decreaseQty({{ product.id }})"
+                        {% if product.stock <= 0 %}disabled{% endif %}>➖</button>
+
+                    <input type="number"
+                           id="qty_{{ product.id }}"
+                           name="quantity"
+                           value="1"
+                           min="1"
+                           data-max="{{ product.stock }}"
+                           style="width:50px; text-align:center;"
+                           {% if product.stock <= 0 %}disabled{% endif %}>
+
+                    <button type="button" onclick="increaseQty({{ product.id }})"
+                        {% if product.stock <= 0 %}disabled{% endif %}>➕</button>
+
+                    {% if product.stock > 0 %}
+                        <button type="submit">Add to Cart</button>
+                    {% else %}
+                        <button type="button" disabled style="opacity:0.5;">
+                            Out of Stock
+                        </button>
+                    {% endif %}
+
+                </form>
+
+            </div>
+            {% endfor %}
+
+        </div>
+
+    </div>
+</div>
+
+<!-- 🌟 MODERN FEEDBACK POPUP -->
+<div id="feedbackModal" class="feedback-overlay">
+
+    <div class="feedback-box">
+        <h2>✨ How was your experience?</h2>
+        <p>We’d love your feedback 💖</p>
+
+        <form method="POST" action="/submit_feedback">
+            <input type="hidden" name="order_id" value="{{ last_order_id }}">
+
+            <!-- ⭐ STAR RATING -->
+            <div class="stars">
+                <input type="radio" name="rating" value="5" id="star5"><label for="star5">★</label>
+                <input type="radio" name="rating" value="4" id="star4"><label for="star4">★</label>
+                <input type="radio" name="rating" value="3" id="star3"><label for="star3">★</label>
+                <input type="radio" name="rating" value="2" id="star2"><label for="star2">★</label>
+                <input type="radio" name="rating" value="1" id="star1" required><label for="star1">★</label>
+            </div>
+
+            <textarea name="comment" placeholder="Tell us what you loved 💄" required></textarea>
+
+            <button type="submit">Submit 💖</button>
+        </form>
+
+        <span class="skip" onclick="closeModal()">Maybe Later</span>
+    </div>
+
+</div>
+
+<style>
+/* 🌟 FEEDBACK MODAL */
+
+.feedback-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(6px);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.feedback-box {
+    width: 360px;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(15px);
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.feedback-box h2 {
+    color: #ff4d6d;
+    margin-bottom: 5px;
+}
+
+.feedback-box p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* ⭐ Stars */
+.stars {
+    display: flex;
+    justify-content: center;
+    flex-direction: row-reverse;
+    margin: 10px 0;
+}
+
+.stars input {
+    display: none;
+}
+
+.stars label {
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.stars input:checked ~ label,
+.stars label:hover,
+.stars label:hover ~ label {
+    color: #ff4d6d;
+    transform: scale(1.2);
+}
+
+/* textarea */
+.feedback-box textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    resize: none;
+    height: 80px;
+}
+
+/* button */
+.feedback-box button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(45deg, #ff4d6d, #ff758c);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.feedback-box button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 25px rgba(255,77,109,0.4);
+}
+
+/* skip */
+.skip {
+    display: block;
+    margin-top: 10px;
+    color: #777;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+/* animation */
+@keyframes fadeIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+</style>
+
+<script>
+function increaseQty(id) {
+    var input = document.getElementById("qty_" + id);
+    var max = parseInt(input.getAttribute("data-max")) || 0;
+    var current = parseInt(input.value) || 1;
+
+    if (max > 0 && current < max) {
+        input.value = current + 1;
+    }
+}
+
+function decreaseQty(id) {
+    var input = document.getElementById("qty_" + id);
+    var current = parseInt(input.value) || 1;
+
+    if (current > 1) {
+        input.value = current - 1;
+    }
+}
+
+function closeModal(){
+    document.getElementById("feedbackModal").style.display = "none";
+}
+
+window.onload = function(){
+    const urlParams = new URLSearchParams(window.location.search);
+    const modal = document.getElementById("feedbackModal");
+
+    if(modal && urlParams.get('feedback') === '1'){
+        setTimeout(() => {
+            modal.style.display = "flex";
+
+            // ✅ remove ?feedback=1 after showing
+            window.history.replaceState({}, document.title, "/customer_dashboard");
+
+        }, 4000);
+    }
+}
+</script>
+</body>
+</html>

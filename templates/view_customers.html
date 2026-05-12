@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Customers</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: linear-gradient(135deg, #f8c8dc, #e75480);
+        }
+
+        .container {
+            width: 95%;
+            margin: 30px auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        /* CARD */
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        /* SEARCH BAR */
+        .search-box {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-box input {
+            padding: 12px 18px;
+            width: 300px;
+            border-radius: 30px;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            outline: none;
+        }
+
+        .search-box button {
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: none;
+            background: #d81b60;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .search-box button:hover {
+            background: #ad1457;
+        }
+
+        .clear-btn {
+            padding: 12px 20px;
+            border-radius: 30px;
+            background: #eee;
+            text-decoration: none;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* TABLE */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: linear-gradient(135deg, #d81b60, #ad1457);
+            color: white;
+            padding: 14px;
+        }
+
+        td {
+            padding: 14px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #fff0f5;
+        }
+
+        /* BACK BUTTON */
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            background: #d81b60;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #ad1457;
+        }
+
+        /* NO DATA */
+        .no-data {
+            text-align: center;
+            font-size: 18px;
+            padding: 20px;
+            color: #777;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>👥 Customers List</h1>
+
+    <div class="card">
+
+        <!-- SEARCH -->
+        <form method="GET" class="search-box">
+            <input type="text" name="search" placeholder="Search customers..." value="{{ request.args.get('search','') }}">
+            <button type="submit">Search</button>
+            <a href="/view_customers" class="clear-btn">Clear</a>
+        </form>
+
+        <!-- TABLE -->
+        {% if customers %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+            </tr>
+
+            {% for customer in customers %}
+            <tr>
+                <td>{{ customer.id }}</td>
+                <td>{{ customer.name }}</td>
+                <td>{{ customer.email }}</td>
+                <td>{{ customer.phone or '—' }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        {% else %}
+            <div class="no-data">No customers found 😕</div>
+        {% endif %}
+
+        <a href="/admin_dashboard" class="back-btn">⬅ Back to Dashboard</a>
+
+    </div>
+
+</div>
+
+</body>
+</html>
